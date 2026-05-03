@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>For Her</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap');
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    background: #000;
+    color: #fff;
+  }
+
+  /* --- Vertical Film Roll Background Styles --- */
+  .film-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow: hidden;
+    transform: rotate(-5deg) scale(1.2); /* Slight tilt for artistic effect */
+  }
+
+  .film-track {
+    display: flex;
+    flex-direction: column; /* Changed to stack vertically */
+    gap: 20px;
+    padding: 20px 0;
+    height: max-content;
+    animation: scrollFilm 40s linear infinite;
+  }
+
+  .film-frame {
+    width: 280px;
+    height: 380px;
+    background-color: #111;
+    background-size: cover;
+    background-position: center;
+    border: 15px solid #050505;
+    border-left-width: 45px;  /* Moved thick borders to the sides */
+    border-right-width: 45px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  }
+
+  /* Film Perforations (Holes on left and right for vertical roll) */
+  .film-frame::before,
+  .film-frame::after {
+    content: "";
+    position: absolute;
+    top: -15px; 
+    bottom: -15px;
+    width: 12px;
+    background: repeating-linear-gradient(0deg, #222 0px, #222 12px, transparent 12px, transparent 24px);
+    opacity: 0.6;
+  }
+  .film-frame::before { left: -30px; }
+  .film-frame::after { right: -30px; }
+
+  @keyframes scrollFilm {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-50%); } /* Scrolls exactly half the vertical track */
+  }
+
+  /* Overlay to tint the film roll based on the poem's theme */
+  .bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.60; /* Decreased from 0.85 so pictures are more visible */
+    transition: background-color 0.8s ease;
+    backdrop-filter: blur(2px); /* Slightly less blur for clearer images */
+  }
+  /* ---------------------------------------- */
+
+  #intro {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.9);
+    text-align: center;
+    padding: 20px;
+    z-index: 10;
+    cursor: pointer;
+  }
+
+  #intro p {
+    max-width: 600px; 
+    font-size: 20px; 
+    line-height: 1.6;
+  }
+
+  .click-prompt {
+    display: block;
+    margin-top: 20px;
+    font-size: 16px;
+    opacity: 0.7;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
+  }
+
+  .acronym {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    letter-spacing: 6px;
+    font-size: 18px;
+    z-index: 5;
+    width: 100%;
+    text-align: center;
+  }
+
+  .acronym span {
+    opacity: 0.25; 
+    transition: 0.3s;
+  }
+  
+  .acronym span.active {
+    opacity: 1;
+    color: #ffb6c1;
+    text-shadow: 0 0 5px rgba(255, 182, 193, 0.5);
+  }
+
+  .container {
+    width: 90%;
+    max-width: 750px;
+    text-align: center;
+    padding: 25px;
+    z-index: 2;
+    backdrop-filter: blur(8px);
+    background: rgba(0,0,0,0.4);
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  }
+
+  .title {
+    font-size: 34px; 
+    margin-bottom: 20px; 
+    font-weight: 600;
+  }
+
+  .poem {
+    font-size: 20px;
+    line-height: 1.9;
+    white-space: pre-line;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btns {
+    margin-top: 25px; 
+    display: flex; 
+    justify-content: space-between;
+  }
+
+  button {
+    padding: 10px 20px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  button:hover:not(:disabled) {
+    background: rgba(255,255,255,0.2);
+  }
+
+  button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .flower {
+    position: absolute;
+    top: -50px;
+    font-size: 22px;
+    animation: fall linear infinite;
+    opacity: 0.7;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="film-bg">
+  <div class="film-track">
+    <div class="film-frame" style="background-image: url('image.jpg');"></div>
+    <div class="film-frame" style="background-image: url('img2.jpg');"></div>
+    <div class="film-frame" style="background-image: url('img3.jpg');"></div>
+    <div class="film-frame" style="background-image: url('img4.jpg');"></div>
+    <div class="film-frame" style="background-image: url('img5.jpg');"></div>
+    
+    <div class="film-frame" style="background-image: url('https://picsum.photos/id/10/280/380');"></div>
+    <div class="film-frame" style="background-image: url('https://picsum.photos/id/22/280/380');"></div>
+    <div class="film-frame" style="background-image: url('https://picsum.photos/id/37/280/380');"></div>
+    <div class="film-frame" style="background-image: url('https://picsum.photos/id/49/280/380');"></div>
+    <div class="film-frame" style="background-image: url('https://picsum.photos/id/54/280/380');"></div>
+  </div>
+</div>
+<div class="bg-overlay" id="bgOverlay"></div>
+<div id="intro">
+  <p>hello baby, happy monthsary and happy 20th birthday. <br>for your 20th birthday i prepared 20 corny poems, hope u like em i love u 
+  <span class="click-prompt">(tap anywhere to start)</span></p>
+</div>
+
+<div class="acronym" id="acronym">
+  <span>I</span><span>L</span><span>O</span><span>V</span><span>E</span><span>Y</span><span>O</span><span>U</span><span>K</span><span>A</span><span>M</span><span>I</span><span>L</span><span>A</span><span>H</span><span>J</span><span>A</span><span>D</span><span>E</span><span>♡</span>
+</div>
+
+<div class="container" id="main" style="display:none;">
+  <div class="title" id="title"></div>
+  <div class="poem" id="poem"></div>
+  <div class="btns">
+    <button id="prevBtn" onclick="prevPoem()">Prev</button>
+    <button id="nextBtn" onclick="nextPoem()">Next</button>
+  </div>
+  
+  <audio id="bgm" loop>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+</div>
+
+<div id="flowers"></div>
+
+<script>
+const poems = [
+  {title:"It Suits", theme:"#1a1a1a", text:`You dye your hair like you’re trying something new,\nbut every shade just ends up looking like you.\nRed, black, or something in between\nit’s never the color, it’s how you’re seen.\nLike somehow the world just adjusts its view,\nbecause no matter what\nit still becomes you.`},
+  {title:"Like Night", theme:"#111", text:`You wear dark like it belongs to your name,\nlike quiet chaos and comfort are the same.\nwhatever fits you choose,\nyou don’t follow the style, it follows you.\nAnd I swear, even in the simplest fit you try,\nyou still look like someone I can’t deny.`},
+  {title:"Only You", theme:"#2b2b2b", text:`It’s not the outfit, it’s never been that,\nyou could wear anything simple, mismatched.\nAnd still I’d look a little too long,\nlike something about you just pulls me along.\nIt’s not what you wear or how you move\nit’s just you being you, and that’s the truth.`},
+  {title:"Very Warm", theme:"#3a2b2b", text:`You don’t fix everything, you don’t pretend,\nbut somehow you make it easier to mend.\nA bad day fades when you’re around,\nlike heavy thoughts just lose their sound.\nYou don’t even try, you don’t even see\nhow much your presence does for me.`},
+  {title:"Everyday Need", theme:"#1b1b1b", text:`A day without you still goes through,\nbut something feels off like it’s missing you.\nLike a sentence that stops before it’s done,\nlike a quiet night without the sun.\nI can get through it, I’ll be okay,\nbut it’s never the same kind of day.`},
+  {title:"You Clear", theme:"#101820", text:`I get lost in thoughts I can’t explain,\nlooping doubts inside my brain.\nThen you talk, and it all slows down,\nlike silence finally found its sound.\nYou don’t try hard, you just stay true,\nand somehow that’s enough to pull me through.`},
+  {title:"Over Again", theme:"#1a1a2e", text:`We fight, we drift, we lose our tone,\nyou go quiet, I overthink alone.\nBut somehow we don’t let it end,\nwe come back, we try again.\nAnd maybe that’s what love can prove,\nnot perfect, just choosing to improve.`},
+  {title:"Until Stay", theme:"#2e1a1a", text:`You don’t have to try so much,\nyou don’t need some perfect touch.\nJust stay close, just be here,\nthat alone makes everything clear.\nNo need to change, no need to prove,\nI already see enough in you.`},
+  {title:"Kind Heart", theme:"#1a2e1a", text:`You say you’re not kind, but I disagree,\nI see it in things you don’t let me see.\nIn how you stay, in how you care,\nin quiet ways you’re always there.\nYou don’t say much, you don’t make it loud,\nbut I see your heart, and I’m proud.`},
+  {title:"Always You", theme:"#2b2b2b", text:`No matter how my whole day goes,\nno matter the highs or even the lows,\nI end up here, thinking of you,\nlike that’s just what my mind will do.\nAnd honestly, I don’t mind it too,\nending my days somewhere with you.`},
+  {title:"My Favorite", theme:"#3b2f2f", text:`Your lips, I notice them more than I should,\nsoft pink, quiet, sometimes misunderstood.\nNot loud, not trying to demand attention,\nbut somehow they stay in every mention.\nAnd if I could, I wouldn’t rush through,\nI’d take my time getting close to you.`},
+  {title:"I’d Wait", theme:"#2a2a2a", text:`If I kiss you, I’d take it slow,\nlike something I don’t want to let go.\nI’d pause first, just to be sure,\nthat this moment is real and pure.\nBecause it’s not just something I’d do,\nit’s something I’d remember with you.`},
+  {title:"Love Fully", theme:"#1f1f1f", text:`You point out things you wish were gone,\nlike they’ve been there all along.\nBut when I look, I don’t see flaws,\njust little things I quietly pause\nTo love, to learn, to understand,\nevery detail, just as it stands.\nNothing about you feels untrue,\neverything just feels like you.`},
+  {title:"All Enough", theme:"#2c2c2c", text:`You’re not perfect, you get distant, you fall,\nyou have your moments, you feel it all.\nBut I don’t want perfect, not even close,\nI want the version of you I know the most.\nFlawed, real, and sometimes unsure,\nthat’s the kind of love I’m here for.`},
+  {title:"Hold On", theme:"#1a1a1a", text:`We mess up, we lose our way,\nwe dont always know what to say.\nBut at the end of every fight,\nI still choose you every night.\nNot because it’s easy or new,\nbut because it’s always you.`},
+  {title:"Just Stayed", theme:"#2a1f1f", text:`Some people leave when things get rough,\nwhen love gets quiet, when it’s not enough.\nBut you stayed through the hard parts too,\nand that’s something I hold onto.\nBecause staying isn’t easy to do,\nand you did… and I saw you.`},
+  {title:"Affect Me", theme:"#1a2a2a", text:`One message from you can shift my day,\nturn everything the other way.\nA simple word, a small reply,\nand suddenly I’m feeling high.\nThat’s how much you matter to me,\nmore than you probably see.`},
+  {title:"Didn’t Plan", theme:"#2a2a3a", text:`I didn’t plan to feel this way,\ndidn’t expect you’d come and stay.\nBut now you’re here, and now it’s true,\nmy world feels different because of you.\nAnd I don’t think I’d want to undo\nwhat I’ve become because of you.`},
+  {title:"Every Time", theme:"#1a1a1a", text:`If this is love, then I understand,\nit’s not just words, it’s where you stand.\nIt’s choosing someone, day by day,\neven when things don’t go your way.\nAnd if this feeling stays this true,\nthen love, to me, will always be you.`},
+  {title:"My Love", theme:"#3a1a2a", text:`And at the end, when everything’s said,\nwhen every thought is in my head,\nit always leads me back to you,\nto everything you say and do.\nBecause if I had to choose again,\nI’d still choose you till the end.`}
+];
+
+let index = 0;
+
+function updateAcronym() {
+  const spans = document.querySelectorAll(".acronym span");
+  spans.forEach((s, i) => s.classList.toggle("active", i <= index));
+}
+
+function updatePoem() {
+  const p = poems[index];
+  document.getElementById("title").innerText = p.title;
+  document.getElementById("poem").innerText = p.text;
+  
+  // Updates the overlay tint to match the poem's unique theme
+  document.getElementById("bgOverlay").style.backgroundColor = p.theme;
+  
+  updateAcronym();
+
+  document.getElementById("prevBtn").disabled = (index === 0);
+  document.getElementById("nextBtn").disabled = (index === poems.length - 1);
+}
+
+function nextPoem() {
+  if (index < poems.length - 1) {
+    index++;
+    updatePoem();
+  }
+}
+
+function prevPoem() {
+  if (index > 0) {
+    index--;
+    updatePoem();
+  }
+}
+
+function createFlowers() {
+  const c = document.getElementById("flowers");
+  const e = ["🌸","🌷","💮","✨","💖","🩷"];
+  setInterval(() => {
+    const f = document.createElement("div");
+    f.className = "flower";
+    f.innerText = e[Math.floor(Math.random() * e.length)];
+    f.style.left = Math.random() * 100 + "vw";
+    f.style.animationDuration = (4 + Math.random() * 5) + "s";
+    c.appendChild(f);
+    setTimeout(() => f.remove(), 9000);
+  }, 350);
+}
+
+document.getElementById("intro").addEventListener("click", () => {
+  document.getElementById("intro").style.display = "none";
+  document.getElementById("main").style.display = "block";
+  
+  createFlowers();
+  updatePoem();
+
+  const audio = document.getElementById("bgm");
+  audio.volume = 0.6;
+  audio.play().catch(error => console.log("Audio play failed:", error));
+});
+</script>
+</body>
+</html>
